@@ -1,24 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {useContext} from 'react';
+import { dataContext } from './Context';
+import DocumentMeta from 'react-document-meta';
+import {Header}  from './components/Header';
+import {Main} from './components/Main';
+
 
 function App() {
+  // adding meta data to the app
+  const meta = {
+    title: 'Budget-App',
+    meta: {
+      charset: 'utf-8',
+    }
+  }
+
+const {calcTotal } = useContext(dataContext)  
+  
+
+// function that assign a class depending on the total amount (incList total - exp total)
+const handleClass = () => {
+  
+
+  // depending on the value if 0, or more than 0, or less than 0 it assign different class 
+  if (calcTotal() === 0) {
+    return 'overlay overlay--neutral'
+  } else if (calcTotal() > 0) {
+    return 'overlay overlay--safe'
+  } else if (calcTotal() < 0) {
+    return 'overlay overlay--danger'
+  }
+}
+  
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <DocumentMeta {...meta}>
+        <div className={handleClass()}></div>
+        <Header />
+        <Main    />
+    </DocumentMeta>
   );
 }
 
